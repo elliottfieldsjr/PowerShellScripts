@@ -59,7 +59,7 @@ foreach ($computerName in $VMsToConvert){
     # Create New OS Managed Disk
     $diskConfig = New-AzDiskConfig -SkuName $OldOSDisk.Sku.Name -Location $VM.Location -DiskSizeGB $OldOSDisk.DiskSizeGB -SourceUri $vhdUri -StorageAccountId $storageAccountId -CreateOption Import -OSType $VM.StorageProfile.OsDisk.OsType -HyperVGeneration $VMStatus.HyperVGeneration
     $SecurityType = $VM.SecurityProfile.SecurityType
-    IF ($SecurityType -ne 'TrustedLaunch'){
+    IF ($SecurityType -eq 'TrustedLaunch'){
         Set-AzDiskSecurityProfile -Disk $diskconfig -SecurityType "TrustedLaunch"
     }
     $NewOSDisk = New-AzDisk -DiskName $NewDiskName -Disk $diskConfig -ResourceGroupName $VMResourceGroupName
