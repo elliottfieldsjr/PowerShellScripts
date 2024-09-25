@@ -1,11 +1,14 @@
 ﻿$VMsToConvert = @()
 $VMsToConvert += 'WIN-VM-TL'
 $VMsToConvert += 'WIN-VM-SL'
+$SubscriptionID = Read-Host 'Please Enter a Subscription ID'
 
+$DESResourceGroupName = 'Disk-Infra'
+$DESName = 'Linux-DDES'
 $StorageResourceGroupName ="WIN-Infra"
 $storageContainerName = "standardvhds"
 $sasExpiryDuration = "3600"
-$NewDiskEncryptionSetID = "/subscriptions/e4409240-d678-41c2-9508-691da4fc7120/resourceGroups/WIN-Infra/providers/Microsoft.Compute/diskEncryptionSets/WIN-Infra-DDES-01"
+$NewDiskEncryptionSetID = '/subscriptions/' + $SubscriptionID + '/resourceGroups/' + $DESResourceGroupName + '/providers/Microsoft.Compute/diskEncryptionSets/' + $DESName
 $storageAccountName = Get-Random
 $StorageLocation = "usgovvirginia"
 
@@ -36,7 +39,7 @@ foreach ($computerName in $VMsToConvert){
     $OldOSDisk = Get-AzDisk -Name $OldDiskName -ResourceGroupName $VMResourceGroupName
 
     # Create Values
-    $NewDiskName = $computerName + '_DESUpdated'
+    $NewDiskName = $computerName + '_DESUpdated1'
     $BlobName = $NewDiskName + '.vhd'
     $Location = $VM.Location
     Stop-AzVM -Name $computerName -ResourceGroupName $VMResourceGroupName -Force
